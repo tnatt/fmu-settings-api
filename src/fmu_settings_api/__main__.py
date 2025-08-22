@@ -1,6 +1,7 @@
 """The main entry point for fmu-settings-api."""
 
 import asyncio
+import os
 import signal
 import sys
 from types import FrameType
@@ -76,8 +77,11 @@ def run_server(  # noqa PLR0913
     signal.signal(signal.SIGTERM, signal_handler)
 
     if reload:
+        if token:
+            os.environ["TOKEN"] = token
+
         uvicorn.run(
-            app=app,
+            app="fmu_settings_api:__main__.app",
             host=host,
             port=port,
             reload=True,

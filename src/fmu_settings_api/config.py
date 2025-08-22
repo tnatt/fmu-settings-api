@@ -1,6 +1,7 @@
 """Settings used for the API."""
 
 import hashlib
+import os
 import secrets
 from typing import Annotated, Any, Final, Self
 
@@ -58,7 +59,7 @@ class APISettings(BaseModel):
 
     API_V1_PREFIX: str = Field(default="/api/v1", frozen=True)
     TOKEN: str = Field(
-        default_factory=generate_auth_token,
+        default=os.getenv("TOKEN", generate_auth_token()),
         pattern=r"^[a-fA-F0-9]{64}$",
     )
 
